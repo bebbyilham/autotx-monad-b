@@ -1,23 +1,27 @@
 #!/usr/bin/env python3
 import os
-#import shareithub
 import sys
 import asyncio
-#from shareithub import shareithub
 from asyncio.subprocess import PIPE
 from subprocess import CalledProcessError
 from colorama import init, Fore, Style
 from dotenv import load_dotenv
-import pyfiglet  # Untuk tampilan ASCII art
-from halo import Halo  # Untuk animasi loading
+import pyfiglet
+from halo import Halo
+import argparse
 
 init(autoreset=True)
 load_dotenv()
 
 PRIVATE_KEY = os.getenv("PRIVATE_KEY")
 
+# Parsing argumen CLI
+parser = argparse.ArgumentParser()
+parser.add_argument("--modul", type=str, help="Nomor modul, contoh: 1,3,5")
+parser.add_argument("--loop", type=int, help="Jumlah pengulangan", default=None)
+args = parser.parse_args()
+
 def display_header():
-    # Membuat banner ASCII art dengan pyfiglet
     ascii_banner = pyfiglet.figlet_format("AUTO TX MONAD")
     border = "=" * 80
     print(Style.BRIGHT + Fore.CYAN + border)
@@ -25,12 +29,9 @@ def display_header():
     sub_header = "By SHARE IT HUB".center(80)
     print(Style.BRIGHT + Fore.MAGENTA + sub_header)
     print(Style.BRIGHT + Fore.CYAN + border + "\n")
-    # Mempertahankan header lama agar tidak menghapus apapun
     print(Style.BRIGHT + Fore.CYAN + "======================================")
     print(Style.BRIGHT + Fore.CYAN + " AUTO TX MONAD BY SHARE IT HUB        ")
     print(Style.BRIGHT + Fore.CYAN + "====================================\n")
-
-#shareithub()
 
 def check_env_vars():
     required_vars = ["PRIVATE_KEY"]
@@ -91,7 +92,7 @@ async def run_scripts_sequentially(loop_count, selected_scripts):
         for script in selected_scripts:
             try:
                 await run_script(script)
-            except Exception as e:
+            except Exception:
                 print(Fore.RED + f"⚠️ Melewati {script['name']} karena error")
 
 async def main():
@@ -104,7 +105,12 @@ async def main():
     for idx, script in enumerate(scripts, start=1):
         print(f"{Fore.YELLOW}{idx}. {Fore.WHITE}{script['name']}")
     print(Fore.CYAN + "-" * 80)
-    selection = input(Fore.CYAN + "\nMasukkan nomor modul (default semua): ").strip()
+
+    # MODUL SELECTION
+    if args.modul:
+        selection = args.modul.strip()
+    else:
+        selection = input(Fore.CYAN + "\nMasukkan nomor modul (default semua): ").strip()
 
     if selection == "":
         selected_modules = scripts
@@ -114,26 +120,28 @@ async def main():
             selected_modules = [scripts[i - 1] for i in indices if 1 <= i <= len(scripts)]
             if not selected_modules:
                 selected_modules = scripts
-        except Exception as e:
+        except:
             selected_modules = scripts
 
-    loop_count_str = input(Fore.CYAN + "\nBerapa kali ingin menjalankan modul? (default 1): ").strip()
-    try:
-        loop_count = int(loop_count_str) if loop_count_str != "" else 1
-        if loop_count <= 0:
-            print(Fore.RED + "Masukkan angka lebih dari 0. Menggunakan default 1.")
+    # LOOP COUNT
+    if args.loop is not None:
+        loop_count = args.loop
+    else:
+        loop_count_str = input(Fore.CYAN + "\nBerapa kali ingin menjalankan modul? (default 1): ").strip()
+        try:
+            loop_count = int(loop_count_str) if loop_count_str != "" else 1
+            if loop_count <= 0:
+                print(Fore.RED + "Masukkan angka lebih dari 0. Menggunakan default 1.")
+                loop_count = 1
+        except:
             loop_count = 1
-    except:
-        loop_count = 1
 
     print(Fore.GREEN + f"\n🚀 Memulai eksekusi {len(selected_modules)} modul selama {loop_count} loop\n")
     await run_scripts_sequentially(loop_count, selected_modules)
     print(Fore.GREEN + Style.BRIGHT + "\n✅✅ Semua modul selesai dijalankan! ✅✅\n")
-    # Ucapan terima kasih dengan border yang lebih stylish
-    thank_you_border = "*" * 80
-    print(Fore.MAGENTA + thank_you_border)
+    print(Fore.MAGENTA + "*" * 80)
     print(Fore.MAGENTA + "Terima kasih telah menggunakan script ini!".center(80))
-    print(Fore.MAGENTA + thank_you_border + "\n")
+    print(Fore.MAGENTA + "*" * 80 + "\n")
 
 if __name__ == '__main__':
     try:
