@@ -30,7 +30,7 @@ contract_address = Web3.to_checksum_address("0xb2f82D0f38dc453D596Ad40A37799446C
 GAS_LIMIT_STAKE = 500000
 GAS_LIMIT_UNSTAKE = 800000
 GAS_LIMIT_CLAIM = 800000
-LOW_GAS_PRICE = w3.to_wei('1', 'gwei')  # 1 Gwei
+LOW_GAS_PRICE = w3.to_wei('10', 'gwei')  # 1 Gwei
 
 def hex_zero_pad(value, length_bytes=32):
     if isinstance(value, int):
