@@ -5,7 +5,7 @@ child = pexpect.spawn('python3 bot.py', encoding='utf-8')
 
 # Tunggu sampai muncul prompt input modul
 child.expect('Masukkan nomor modul.*:')
-child.sendline('3,5')  # pilih modul ke-1, misalnya
+child.sendline('3,5,7')  # pilih modul ke-1, misalnya
 
 # Tunggu sampai muncul prompt input loop
 child.expect('Berapa kali.*:')
