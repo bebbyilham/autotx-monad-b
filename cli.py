@@ -8,7 +8,7 @@ child.expect('Pilih modul yang ingin dijalankan (pisahkan dengan koma, misal: 1,
 child.sendline('1,2,5')
 
 # Tunggu prompt berikutnya, kirim "2"
-child.expect('Masukkan pilihan:')
+child.expect('Berapa kali ingin menjalankan modul? (default 1): ')
 child.sendline('50')
 
 # Tunggu program selesai
