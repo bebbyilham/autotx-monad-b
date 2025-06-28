@@ -53,7 +53,7 @@ if not os.path.isdir(module_folder):
     print(Fore.RED + f"Folder '{module_folder}' tidak ditemukan!")
     sys.exit(1)
 
-module_files = [f for f in os.listdir(module_folder) if f.endswith(".py")]
+module_files = sorted([f for f in os.listdir(module_folder) if f.endswith(".py")])
 
 scripts = []
 for filename in module_files:
