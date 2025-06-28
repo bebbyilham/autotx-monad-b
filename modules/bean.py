@@ -112,7 +112,7 @@ def swap_eth_for_tokens(w3_instance, account, token_address, amount_in_wei, toke
         ).build_transaction({
             'from': account.address,
             'value': amount_in_wei,
-            'gas': 210000,
+            'gas': 100000,
             'nonce': nonce,
             'chainId': CHAIN_ID,
             'gasPrice': w3_instance.eth.gas_price
@@ -177,7 +177,7 @@ def swap_tokens_for_eth(w3_instance, account, token_address, token_symbol):
             deadline
         ).build_transaction({
             'from': account.address,
-            'gas': 210000,
+            'gas': 100000,
             'nonce': nonce,
             'chainId': CHAIN_ID,
             'gasPrice': w3_instance.eth.gas_price
