@@ -30,7 +30,7 @@ contract_address = Web3.to_checksum_address("0xb2f82D0f38dc453D596Ad40A37799446C
 GAS_LIMIT_STAKE = 500000
 GAS_LIMIT_UNSTAKE = 800000
 GAS_LIMIT_CLAIM = 800000
-
+LOW_GAS_PRICE = w3.to_wei('1', 'gwei')  # 1 Gwei
 
 def hex_zero_pad(value, length_bytes=32):
     if isinstance(value, int):
@@ -41,10 +41,8 @@ def hex_zero_pad(value, length_bytes=32):
         raise TypeError("Tipe data tidak didukung untuk padding hex")
     return "0x" + hex_str.zfill(length_bytes * 2)
 
-
 def hex_zero_pad_address(address, length_bytes=32):
     return "0x" + address[2:].lower().zfill(length_bytes * 2)
-
 
 def get_random_amount():
     min_val = 0.0001
@@ -52,29 +50,22 @@ def get_random_amount():
     random_amount = round(random.uniform(min_val, max_val), 4)
     return w3.to_wei(random_amount, "ether")
 
-
 def get_random_delay():
     min_delay = 1 * 60 * 1000  # dalam ms
     max_delay = 2 * 60 * 1000  # dalam ms
     return random.randint(min_delay, max_delay)
 
-
 def delay(ms):
     time.sleep(ms / 1000)
 
-
 def send_transaction(tx):
     tx['nonce'] = w3.eth.get_transaction_count(account.address)
-    if 'gasPrice' not in tx:
-        tx['gasPrice'] = w3.eth.gas_price
+    tx['gasPrice'] = LOW_GAS_PRICE  # Gunakan gas price rendah
     signed_tx = account.sign_transaction(tx)
-    # Perbaiki atribut rawTransaction menjadi raw_transaction
     return w3.eth.send_raw_transaction(signed_tx.raw_transaction)
-
 
 def wait_for_receipt(tx_hash):
     return w3.eth.wait_for_transaction_receipt(tx_hash)
-
 
 def stake_mon():
     try:
@@ -89,11 +80,14 @@ def stake_mon():
         }
         tx_hash = send_transaction(tx)
         print(Fore.YELLOW + f"➡️  Hash: {tx_hash.hex()}")
-        return wait_for_receipt(tx_hash), stake_amount
+        receipt = wait_for_receipt(tx_hash)
+        gas_used = receipt['gasUsed']
+        total_fee = gas_used * LOW_GAS_PRICE
+        print(Fore.CYAN + f"⛽ Gas Used: {gas_used} | Fee: {Web3.from_wei(total_fee, 'ether')} ETH")
+        return receipt, stake_amount
     except Exception as e:
         print(Fore.RED + f"❌ Staking failed: {str(e)}")
         raise
-
 
 def request_unstake(amount_to_unstake):
     try:
@@ -110,11 +104,14 @@ def request_unstake(amount_to_unstake):
         }
         tx_hash = send_transaction(tx)
         print(Fore.YELLOW + f"➡️  Hash: {tx_hash.hex()}")
-        return wait_for_receipt(tx_hash)
+        receipt = wait_for_receipt(tx_hash)
+        gas_used = receipt['gasUsed']
+        total_fee = gas_used * LOW_GAS_PRICE
+        print(Fore.CYAN + f"⛽ Gas Used: {gas_used} | Fee: {Web3.from_wei(total_fee, 'ether')} ETH")
+        return receipt
     except Exception as e:
         print(Fore.RED + f"❌ Unstake failed: {str(e)}")
         raise
-
 
 def run_cycle():
     try:
@@ -125,14 +122,12 @@ def run_cycle():
     except Exception as e:
         print(Fore.RED + f"❌ Error in cycle: {str(e)}")
 
-
 def main():
     display_header()
     print(Fore.BLUE + "\n🪫  Starting Apriori ⏩⏩⏩⏩\n")
     for i in range(1):
         run_cycle()
         delay(get_random_delay())
-
 
 if __name__ == '__main__':
     main()
