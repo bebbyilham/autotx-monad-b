@@ -47,8 +47,8 @@ def hex_zero_pad_address(address, length_bytes=32):
 
 
 def get_random_amount():
-    min_val = 0.01
-    max_val = 0.05
+    min_val = 0.0001
+    max_val = 0.0005
     random_amount = round(random.uniform(min_val, max_val), 4)
     return w3.to_wei(random_amount, "ether")
 
