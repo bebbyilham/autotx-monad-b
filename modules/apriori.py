@@ -27,9 +27,9 @@ account = Account.from_key(PRIVATE_KEY)
 contract_address = Web3.to_checksum_address("0xb2f82D0f38dc453D596Ad40A37799446Cc89274A")
 
 # Gas limit
-GAS_LIMIT_STAKE = 250000
-GAS_LIMIT_UNSTAKE = 400000
-GAS_LIMIT_CLAIM = 400000
+GAS_LIMIT_STAKE = 25000
+GAS_LIMIT_UNSTAKE = 40000
+GAS_LIMIT_CLAIM = 40000
 LOW_GAS_PRICE = w3.to_wei('52', 'gwei')  # 1 Gwei
 
 def hex_zero_pad(value, length_bytes=32):
