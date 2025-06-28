@@ -1,16 +1,16 @@
 import pexpect
 
-# Jalankan program CLI yang akan diisi input
+# Jalankan bot.py
 child = pexpect.spawn('python3 bot.py', encoding='utf-8')
 
-# Tunggu muncul prompt, kirim "1"
-child.expect('Pilih modul yang ingin dijalankan (pisahkan dengan koma, misal: 1,2,3).')
-child.sendline('1,2,5')
+# Tunggu sampai muncul prompt input modul
+child.expect('Masukkan nomor modul.*:')
+child.sendline('1')  # pilih modul ke-1, misalnya
 
-# Tunggu prompt berikutnya, kirim "2"
-child.expect('Berapa kali ingin menjalankan modul? (default 1): ')
-child.sendline('50')
+# Tunggu sampai muncul prompt input loop
+child.expect('Berapa kali.*:')
+child.sendline('2')  # jalankan 2 kali
 
-# Tunggu program selesai
+# Tunggu hingga selesai
 child.expect(pexpect.EOF)
-print(child.before)  # Tampilkan hasil
+print(child.before)
