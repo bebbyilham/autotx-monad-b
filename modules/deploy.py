@@ -96,7 +96,7 @@ def deploy_contract(contract_name):
         tx = Contract.constructor().build_transaction({
             'from': account.address,
             'nonce': nonce,
-            'gas': 3000000,
+            'gas': 100000,
             'gasPrice': w3.eth.gas_price,
             'chainId': w3.eth.chain_id
         })

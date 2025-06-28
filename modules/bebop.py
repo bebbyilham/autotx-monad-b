@@ -61,7 +61,7 @@ def wrap_mon(amount):
         tx = contract.functions.deposit().build_transaction({
             'from': account.address,
             'value': amount,
-            'gas': 210000,
+            'gas': 100000,
             'nonce': nonce,
             'gasPrice': w3.eth.gas_price
         })
@@ -80,7 +80,7 @@ def unwrap_mon(amount):
         nonce = w3.eth.get_transaction_count(account.address)
         tx = contract.functions.withdraw(amount).build_transaction({
             'from': account.address,
-            'gas': 210000,
+            'gas': 100000,
             'nonce': nonce,
             'gasPrice': w3.eth.gas_price
         })

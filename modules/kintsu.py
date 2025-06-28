@@ -28,8 +28,8 @@ if not PRIVATE_KEY:
 account = w3.eth.account.from_key(PRIVATE_KEY)
 
 contract_address = Web3.to_checksum_address("0x2c9C959516e9AAEdB2C748224a41249202ca8BE7")
-gas_limit_stake = 500000
-gas_limit_unstake = 800000
+gas_limit_stake = 100000
+gas_limit_unstake = 100000
 
 STAKE_AMOUNT = w3.to_wei(0.1, 'ether')
 UNSTAKE_DELAY = 5 * 60  
