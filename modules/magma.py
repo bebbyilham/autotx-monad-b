@@ -28,7 +28,7 @@ account = w3.eth.account.from_key(PRIVATE_KEY)
 
 contractAddress = "0x2c9C959516e9AAEdB2C748224a41249202ca8BE7"
 gasLimitStake = 100000
-gasLimitUnstake = 100000
+gasLimitUnstake = 125000
 
 def getRandomAmount():
     min_val = 0.0001
