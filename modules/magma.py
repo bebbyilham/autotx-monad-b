@@ -31,8 +31,8 @@ gasLimitStake = 500000
 gasLimitUnstake = 800000
 
 def getRandomAmount():
-    min_val = 0.01
-    max_val = 0.05
+    min_val = 0.0001
+    max_val = 0.0005
     randomAmount = random.uniform(min_val, max_val)
     # Bulatkan hingga 4 desimal, kemudian konversi ke Wei
     return w3.to_wei(round(randomAmount, 4), 'ether')

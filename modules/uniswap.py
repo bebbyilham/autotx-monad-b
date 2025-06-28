@@ -102,8 +102,8 @@ wallet = w3.eth.account.from_key(PRIVATE_KEY)
 print(Fore.GREEN + f"🧧 Account: {wallet.address}")
 
 def get_random_eth_amount():
-    # Menghasilkan nilai acak antara 0.0001 dan 0.01 ether
-    amount = random.uniform(0.0001, 0.01)
+    # Menghasilkan nilai acak antara 0.0001 dan 0.0005 ether
+    amount = random.uniform(0.0001, 0.0005)
     # Bulatkan ke 6 desimal dan konversi ke wei
     return w3.to_wei(round(amount, 6), 'ether')
 
